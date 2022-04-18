@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Golaço</title>
+  </head>
+  <body style="background-color: black; color: white">
+    <p style="text-align: center">Sistema de torneios de futebol IGNIS.</p>
+    <div style="text-align: center">
+      <label for="time">Time</label><br />
+      <textarea id="time"></textarea><br />
+      <input type="button" onclick="submit()" value="ENVIAR" />
+    </div>
+    <div id="jogos"></div>
+  </body>
+  <script>
+    function gerajogos() {
+      var times = document.getElementById("time").value.split("\n");
+
+      /**
+       * 0 Vasco;Rio de Janeiro
+       * 1 Flamengo;Rio de Janeiro
+       * 2 Palmeiras;São Paulo
+       * 3 Santos;São Paulo
+       * 4 Cruzeiro;Minas Gerais
+       * 5 Internacional;Rio Grande do Sul
+       *
+       * Vasco vs Flamengo - Rio de Janeiro
+       * Palmeiras vs Santos - São Paulo
+       * Cruzeiro vs Internacional - Minas Gerais
+       *
+       * Flamengo vs Palmeiras -  Rio de Janeiro
+       * Santos vs Cruzeiro -  São Paulo
+       * Internacional vs Vasco - Rio Grande do Sul
+       *
+       *
+       *
+       * Flamengo vs Vasco - Rio de Janeiro
+       * Santos vs Palmeiras - São Paulo
+       * Internacional vs Cruzeiro - Rio Grande do Sul
+       *
+       *
+       * Palmeiras vs Flamengo -   São Paulo
+       * Cruzeiro vs Santos  -  Minas Gerais
+       * Vasco vs Internacional  - Rio de Janeiro
+       *
+       */
+
+      let totalTimes = times.length;
+      let rodada = 1;
+      for (let anfitriao = 0; anfitriao < totalTimes; anfitriao++) {
+        for (let convidado = 0; convidado < totalTimes; convidado++) {
+            let limiteGols = Math.round(Math.random()* 8);
+            let golsAnfitriao = Math.round(Math.random() * limiteGols);
+            let golsConvidado = Math.round(Math.random() * limiteGols);
+
+          if (anfitriao !== convidado) {
+            let time1 = `${times[anfitriao].split(";")[0]}`;
+            let time2 = `${times[convidado].split(";")[0]}`;
+            let local = `${times[anfitriao].split(";")[1]}`;
+            var text = `${time1} vs ${time2} - ${local} - Rodada ${rodada} - Gols: ${golsAnfitriao} x ${golsConvidado}`;
+            document.getElementById("jogos").innerHTML += text + "<br>";
+            anfitriao = convidado + 1;
+          }
+        }
+        rodada++;
+        document.getElementById("jogos").innerHTML += "<br>";
+      }
+      //rodada2
+      for (let anfitriao = 1; anfitriao < totalTimes; anfitriao++) {
+        for (let convidado = 1; convidado <= totalTimes; convidado++) {
+          if (anfitriao !== convidado) {
+            if (convidado === totalTimes) {
+              valor = 0;
+            } else {
+              valor = convidado;
+            }
+            let time1 = `${times[anfitriao].split(";")[0]}`;
+            let time2 = `${times[valor].split(";")[0]}`;
+            let local = `${times[anfitriao].split(";")[1]}`;
+            var text = `${time1} vs ${time2} - ${local} - Rodada ${rodada}`;
+            document.getElementById("jogos").innerHTML += text + "<br>";
+            anfitriao = convidado + 1;
+          }
+        }
+        rodada++;
+        document.getElementById("jogos").innerHTML += "<br>";
+      }
+
+      //rodada  3;
+      for (let anfitriao = 1; anfitriao < totalTimes; anfitriao++) {
+        for (let convidado = 1; convidado <= totalTimes; convidado++) {
+          if (anfitriao !== convidado) {
+            if (convidado === totalTimes) {
+              valor = 0;
+            } else {
+              valor = convidado;
+            }
+            let time1 = `${times[valor].split(";")[0]}`;
+            let time2 = `${times[anfitriao].split(";")[0]}`;
+            let local = `${times[valor].split(";")[1]}`;
+            var text = `${time1} vs ${time2} - ${local} - Rodada ${rodada}`;
+            document.getElementById("jogos").innerHTML += text + "<br>";
+            anfitriao = convidado + 1;
+          }
+        }
+        rodada++;
+        document.getElementById("jogos").innerHTML += "<br>";
+      }
+
+      //rodada inversa
+      for (let anfitriao = 5; anfitriao < totalTimes; anfitriao--) {
+        for (let convidado = 5; convidado < totalTimes; convidado--) {
+          if (anfitriao !== convidado) {
+            console.log(anfitriao);
+            if(anfitriao === -1) {
+                return
+            }
+              let time1 = `${times[anfitriao].split(";")[0]}`;
+              let time2 = `${times[convidado].split(";")[0]}`;
+              let local = `${times[anfitriao].split(";")[1]}`;
+              var text = `${time1} vs ${time2} - ${local} - Rodada ${rodada}`;
+              document.getElementById("jogos").innerHTML += text + "<br>";
+              anfitriao = convidado - 1;
+          }
+        }
+        rodada++;
+        document.getElementById("jogos").innerHTML += "<br>";
+      }
+    }
+
+    function submit() {
+      gerajogos();
+      //TODO: 
+      /**
+       * 
+       * refatorar a forma como é gerado os jogos (usar os index pares para o anfitriao e impares para o convidado)
+       * 
+       * colocar os jogos em um array
+       * passar o array para uma funcao que imprime os jogos
+       * passar o arrya para uma funcao que calcula os pontos e imprime o campeao
+      */
+    }
+  </script>
+</html>
